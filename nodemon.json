@@ -1,0 +1,4 @@
+{
+  "watch": ["packages", "example/src"],
+  "ext": "ts"
+}
