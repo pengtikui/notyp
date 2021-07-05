@@ -1,6 +1,6 @@
 {
   "name": "@notyp/core",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "author": "pengtikui",
   "license": "MIT",
   "main": "./lib/index.js",
