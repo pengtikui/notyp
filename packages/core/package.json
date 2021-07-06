@@ -1,8 +1,18 @@
 {
   "name": "@notyp/core",
   "version": "0.0.1",
+  "description": "A simple Node.js framework based on Koa and TypeDI.",
   "author": "pengtikui",
   "license": "MIT",
+  "homepage": "https://github.com/pengtikui/notyp#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pengtikui/notyp.git",
+    "directory": "packages/core"
+  },
+  "bugs": {
+    "url": "https://github.com/pengtikui/notyp/issues"
+  },
   "main": "./lib/index.js",
   "dependencies": {
     "@koa/router": "^10.0.0",
@@ -20,5 +30,8 @@
     "@types/koa-session": "^5.10.3",
     "@types/koa__router": "^8.0.4",
     "@types/lodash.get": "^4.4.6"
+  },
+  "engines": {
+    "node": ">=14.5.0"
   }
 }
