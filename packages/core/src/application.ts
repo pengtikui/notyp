@@ -1,4 +1,5 @@
 import { Server } from 'http';
+import { ListenOptions } from 'net';
 import Koa, { Middleware } from 'koa';
 import Router from '@koa/router';
 
@@ -70,16 +71,20 @@ export class Application extends Koa {
     this.presetMiddlewares.push(session(options?.session || {}, this));
   }
 
-  /**
-   * @param {number} [port=8000]
-   */
-  public async bootstrap(port?: number): Promise<void> {
+  // prettier-ignore
+  bootstrap(port?: number, hostname?: string, backlog?: number, listeningListener?: () => void): void;
+  bootstrap(port: number, hostname?: string, listeningListener?: () => void): void;
+  bootstrap(port: number, backlog?: number, listeningListener?: () => void): void;
+  bootstrap(port: number, listeningListener?: () => void): void;
+  bootstrap(path: string, backlog?: number, listeningListener?: () => void): void;
+  bootstrap(path: string, listeningListener?: () => void): void;
+  bootstrap(options: ListenOptions, listeningListener?: () => void): void;
+  bootstrap(handle: any, backlog?: number, listeningListener?: () => void): void;
+  bootstrap(handle: any, listeningListener?: () => void): void;
+  public bootstrap(...args: any): void {
     registerMiddleware([...this.presetMiddlewares, ...this.middlewares], this);
     registerController(this.controllers, this);
 
-    port = port || 8000;
-    this.server = this.listen(port, () => {
-      console.log(`Server is listening at http://localhost:${port}`);
-    });
+    this.server = this.listen(...args);
   }
 }
