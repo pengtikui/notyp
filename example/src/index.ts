@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { Application, Controller, Get, Injectable, Query } from '@notyp/core';
+import config from '@notyp/config';
 
 @Injectable()
 class UserService {
@@ -14,7 +15,7 @@ class UserController {
 
   @Get('detail')
   getUserDetail(@Query() query: any) {
-    return { ...this.userService.getUserDetail(), query };
+    return { ...this.userService.getUserDetail(), query, dbConfig: config.get('DB') };
   }
 }
 
