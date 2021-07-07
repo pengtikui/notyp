@@ -1,0 +1,32 @@
+{
+  "name": "@notyp/config",
+  "version": "0.0.1",
+  "description": "A simple Node.js framework based on Koa and TypeDI.",
+  "author": "pengtikui",
+  "license": "MIT",
+  "homepage": "https://github.com/pengtikui/notyp#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pengtikui/notyp.git",
+    "directory": "packages/config"
+  },
+  "bugs": {
+    "url": "https://github.com/pengtikui/notyp/issues"
+  },
+  "main": "./lib/index.js",
+  "dependencies": {
+    "js-yaml": "^4.1.0",
+    "lodash.get": "^4.4.2",
+    "lodash.merge": "^4.6.2",
+    "lodash.set": "^4.3.2"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.2",
+    "@types/lodash.get": "^4.4.6",
+    "@types/lodash.merge": "^4.6.6",
+    "@types/lodash.set": "^4.3.6"
+  },
+  "engines": {
+    "node": ">=14.5.0"
+  }
+}
