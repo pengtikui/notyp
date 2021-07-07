@@ -1,13 +1,13 @@
 {
   "name": "@notyp/example",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "scripts": {
     "start": "ts-node ./src/index.ts"
   },
   "dependencies": {
-    "@notyp/config": "0.0.1",
-    "@notyp/core": "^0.0.1",
+    "@notyp/config": "^0.0.2",
+    "@notyp/core": "^0.0.2",
     "reflect-metadata": "^0.1.13",
     "typedi": "^0.10.0"
   },
