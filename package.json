@@ -4,7 +4,8 @@
   "private": true,
   "workspaces": [
     "packages/*",
-    "example"
+    "example",
+    "docs"
   ],
   "scripts": {
     "dev:example": "nodemon --exec 'yarn workspace @notyp/example start'"
