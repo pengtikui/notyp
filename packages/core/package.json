@@ -16,6 +16,8 @@
   "main": "./lib/index.js",
   "dependencies": {
     "@koa/router": "^10.0.0",
+    "class-transformer": "^0.4.0",
+    "class-validator": "^0.13.1",
     "is-promise": "^4.0.0",
     "koa": "^2.13.1",
     "koa-bodyparser": "^4.3.0",

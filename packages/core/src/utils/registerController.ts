@@ -22,9 +22,9 @@ const getMethodNames = (prototype: any): string[] => {
 };
 
 const makeRouterMiddleware =
-  (fn: Function, instance: Object, paramMetadataList: IParamValue[]) =>
+  (fn: Function, instance: Object, paramMetadataList: IParamValue[], paramTypes: any[]) =>
   async (ctx: Koa.Context, next: Koa.Next) => {
-    const args = getControllerArgs(paramMetadataList, ctx);
+    const args = await getControllerArgs(ctx, paramMetadataList, paramTypes);
 
     let result = fn.apply(instance, args);
     ctx.body = isPromise(result) ? await result : result;
@@ -55,7 +55,12 @@ export function registerController(controllers: Function[], app: Koa) {
         paramMetadataList.push(...(metadata || []));
       });
 
-      (router as any)[method](fullPath, makeRouterMiddleware(fn, instance, paramMetadataList));
+      const paramTypes = Reflect.getMetadata('design:paramtypes', instance, methodName);
+
+      (router as any)[method](
+        fullPath,
+        makeRouterMiddleware(fn, instance, paramMetadataList, paramTypes)
+      );
     });
   });
 

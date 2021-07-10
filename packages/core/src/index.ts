@@ -5,3 +5,4 @@ export * from './decorator/injectable';
 export * from './decorator/controller';
 export * from './decorator/methods';
 export * from './decorator/params';
+export * from './exception/ValidationException';

@@ -1,25 +1,37 @@
 import { Context } from 'koa';
 import get from 'lodash.get';
+import { plainToClass } from 'class-transformer';
+import { validateOrReject } from 'class-validator';
 import { PARAM_TYPES } from '../constants';
 import { IParamValue } from '../interface';
+import { ValidationException } from '../exception/ValidationException';
 
-const getQuery = (ctx: Context, paramMetadata: IParamValue): any => {
-  const { options } = paramMetadata;
-  if (options && typeof options === 'string') {
-    return get(ctx.query, options);
+const tranformAndValidateValue = async (type: any, plain: any, options?: any): Promise<any> => {
+  const value = plainToClass(type, plain);
+
+  try {
+    await validateOrReject(value);
+  } catch (error) {
+    throw new ValidationException(error);
   }
-  return ctx.query;
+
+  if (options && typeof options === 'string') {
+    return get(value, options);
+  }
+  return value;
 };
 
-const getBody = (ctx: Context, paramMetadata: IParamValue): any => {
-  const { options } = paramMetadata;
-  if (options && typeof options === 'string') {
-    return get(ctx.request.body, options);
-  }
-  return ctx.request.body;
+const getQuery = (ctx: Context, paramMetadata: IParamValue, paramTypes: any[]): any => {
+  const { options, index } = paramMetadata;
+  return tranformAndValidateValue(paramTypes[index], ctx.query, options);
 };
 
-const getContext = (ctx: Context, paramMetadata: IParamValue): any => {
+const getBody = (ctx: Context, paramMetadata: IParamValue, paramTypes: any[]): any => {
+  const { options, index } = paramMetadata;
+  return tranformAndValidateValue(paramTypes[index], ctx.request.body, options);
+};
+
+const getContext = (ctx: Context): any => {
   return ctx;
 };
 
@@ -31,32 +43,37 @@ const getCookies = (ctx: Context, paramMetadata: IParamValue): any => {
   return ctx.cookies;
 };
 
-const getSession = (ctx: Context, paramMetadata: IParamValue): any => {
+const getSession = (ctx: Context): any => {
   return ctx.session;
 };
 
-export function getControllerArgs(paramMetadataList: IParamValue[], ctx: Context) {
+export async function getControllerArgs(
+  ctx: Context,
+  paramMetadataList: IParamValue[],
+  paramTypes: any[]
+) {
   const args: any[] = [];
 
-  const getValue = (paramMetadata: IParamValue) => {
+  const getValue = async (paramMetadata: IParamValue) => {
     switch (paramMetadata.paramType) {
       case PARAM_TYPES.QUERY:
-        return getQuery(ctx, paramMetadata);
+        return getQuery(ctx, paramMetadata, paramTypes);
       case PARAM_TYPES.BODY:
-        return getBody(ctx, paramMetadata);
+        return getBody(ctx, paramMetadata, paramTypes);
       case PARAM_TYPES.CTX:
-        return getContext(ctx, paramMetadata);
+        return getContext(ctx);
       case PARAM_TYPES.COOKIES:
         return getCookies(ctx, paramMetadata);
       case PARAM_TYPES.SESSION:
-        return getSession(ctx, paramMetadata);
+        return getSession(ctx);
       default:
         return undefined;
     }
   };
 
-  paramMetadataList.forEach((paramMetadata) => {
-    args[paramMetadata.index] = getValue(paramMetadata);
-  });
+  for (const paramMetadata of paramMetadataList) {
+    args[paramMetadata.index] = await getValue(paramMetadata);
+  }
+
   return args;
 }
