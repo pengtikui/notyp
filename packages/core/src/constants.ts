@@ -8,4 +8,5 @@ export const PARAM_TYPES = {
   CTX: 'notyp:param:ctx',
   COOKIES: 'notyp:param:cookies',
   SESSION: 'notyp:param:session',
+  PARAMS: 'notyp:param:params',
 };

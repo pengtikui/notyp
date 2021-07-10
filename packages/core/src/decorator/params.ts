@@ -21,3 +21,4 @@ export const Body = createParamDecorator(PARAM_TYPES.BODY);
 export const Ctx = createParamDecorator(PARAM_TYPES.CTX);
 export const Cookie = createParamDecorator(PARAM_TYPES.COOKIES);
 export const Session = createParamDecorator(PARAM_TYPES.SESSION);
+export const Params = createParamDecorator(PARAM_TYPES.PARAMS);

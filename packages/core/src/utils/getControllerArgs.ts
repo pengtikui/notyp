@@ -47,6 +47,14 @@ const getSession = (ctx: Context): any => {
   return ctx.session;
 };
 
+const getParams = (ctx: Context, paramMetadata: IParamValue): any => {
+  const { options } = paramMetadata;
+  if (options && typeof options === 'string') {
+    return get(ctx.params, options);
+  }
+  return ctx.params;
+};
+
 export async function getControllerArgs(
   ctx: Context,
   paramMetadataList: IParamValue[],
@@ -66,6 +74,8 @@ export async function getControllerArgs(
         return getCookies(ctx, paramMetadata);
       case PARAM_TYPES.SESSION:
         return getSession(ctx);
+      case PARAM_TYPES.PARAMS:
+        return getParams(ctx, paramMetadata);
       default:
         return undefined;
     }

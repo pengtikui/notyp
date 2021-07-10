@@ -3,7 +3,9 @@ import {
   Application,
   Body,
   Controller,
+  Get,
   Injectable,
+  Params,
   Post,
   Query,
   ValidationException,
@@ -34,6 +36,11 @@ class UserBody {
 @Controller('user')
 class UserController {
   constructor(private readonly userService: UserService) {}
+
+  @Get(':id')
+  user(@Params('id') id: string) {
+    return `hello user ${id}`;
+  }
 
   @Post('detail')
   getUserDetail(@Query() query: UserQuery, @Body() body: UserBody) {
