@@ -5,6 +5,7 @@ import isPromise from 'is-promise';
 import { joinPath } from './joinPath';
 import { METHOD_METADATA, PARAM_TYPES, PATH_METADATA, PREFIX_METADATA } from '../constants';
 import { IParamValue } from '../interface';
+import { getControllerArgs } from './getControllerArgs';
 
 const getMethodNames = (prototype: any): string[] => {
   return Object.getOwnPropertyNames(prototype).filter((methodName: string) => {
@@ -20,20 +21,10 @@ const getMethodNames = (prototype: any): string[] => {
   });
 };
 
-const getArgs = (ctx: Koa.Context, paramMetadata: IParamValue): any => {
-  switch (paramMetadata.paramType) {
-    case PARAM_TYPES.QUERY:
-      return ctx.query;
-  }
-};
-
 const makeRouterMiddleware =
-  (fn: Function, instance: Object, methodName: string, paramMetadataList: IParamValue[]) =>
+  (fn: Function, instance: Object, paramMetadataList: IParamValue[]) =>
   async (ctx: Koa.Context, next: Koa.Next) => {
-    const args: any[] = [];
-    paramMetadataList.forEach((paramMetadata) => {
-      args[paramMetadata.index] = getArgs(ctx, paramMetadata);
-    });
+    const args = getControllerArgs(paramMetadataList, ctx);
 
     let result = fn.apply(instance, args);
     ctx.body = isPromise(result) ? await result : result;
@@ -64,10 +55,7 @@ export function registerController(controllers: Function[], app: Koa) {
         paramMetadataList.push(...(metadata || []));
       });
 
-      (router as any)[method](
-        fullPath,
-        makeRouterMiddleware(fn, instance, methodName, paramMetadataList)
-      );
+      (router as any)[method](fullPath, makeRouterMiddleware(fn, instance, paramMetadataList));
     });
   });
 
