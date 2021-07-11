@@ -10,8 +10,7 @@
     "@notyp/core": "^0.0.3",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
-    "reflect-metadata": "^0.1.13",
-    "typedi": "^0.10.0"
+    "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
     "@types/node": "^15.12.5",

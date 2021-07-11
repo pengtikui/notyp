@@ -1,3 +1,7 @@
 {
-  "index": "介绍"
+  "index": "介绍",
+  "get-started": "快速上手",
+  "feature": "基础功能",
+  "core": "@notyp/core",
+  "config": "@notyp/config"
 }

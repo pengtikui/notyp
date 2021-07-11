@@ -1,0 +1,91 @@
+# 快速上手
+
+### 环境要求
+
+- Node.js 版本 >= 14.5.0
+- TypeScript
+- Yarn
+
+> Yarn 不是必须的，你也可以使用 npm 或其他包管理工具，文档中的示例均已 Yarn 为例。
+
+### 初始化项目
+
+```bash
+# 初始化
+yarn init
+
+# 安装依赖
+yarn add typescript @types/node -D
+
+# 初始化 TypeScript 配置
+npx tsc --init
+```
+
+将 tsconfig.json 中的 `experimentalDecorators` 和 `emitDecoratorMetadata` 配置项设为 `true`
+
+### 安装 Notyp
+
+```bash
+yarn add @notyp/core reflect-metadata class-transformer class-validator
+```
+
+`class-transformer` 和 `class-validator` 不是必需的，如果不使用参数校验相关功能，可以不安装。
+
+### 添加项目文件
+
+Notyp 不限制目录结构，本文档以下面的目录结构为例进行，其中 `src/app.ts` 为项目入口文件：
+
+```
+|- src
+    |- controller
+          |- user.ts
+    |- app.ts
+|- package.json
+|- tsconfig.json
+```
+
+#### src/app.ts
+
+```ts
+import 'reflect-metadata'; // 项目入口顶端导入 reflect-metadata
+import { Application } from '@notyp/core';
+import { UserController } from './controller/user';
+
+const app = new Application({
+  controllers: [UserController],
+});
+
+app.bootstrap(8000, () => {
+  consoloe.log('app is runing at http://localhost:8000');
+});
+```
+
+#### src/controller/user.ts
+
+```ts
+import { Controller, Get, Params } from '@notyp/core';
+
+@Controller('user')
+export class UserController {
+  @Get(':id')
+  async getUser(@Params('id') id: string) {
+    return `hello user ${id}`;
+  }
+}
+```
+
+### 启动项目
+
+添加完上面的项目文件，就有了一个极简但完整的项目，现在可以启动项目了。
+
+开发时可以直接使用 `ts-node` 启动（需单独安装）：
+
+```bash
+npx ts-node ./src/app.ts
+```
+
+也可以使用 tsc 编译后直接运行 js 文件。
+
+项目启动后，可以在控制台看到 `app is runing at http://localhost:8000`，通过浏览器访问 `http://localhost:8000/user/1` 就可以看到响应了。
+
+现在就可以开始编写你的伟大项目了！

@@ -1,0 +1,47 @@
+# 配置项
+
+```ts
+interface ApplicationOptions {
+  /**
+   * Signed cookie keys
+   */
+  keys?: string[];
+
+  /**
+   * Trust proxy headers
+   */
+  proxy?: boolean;
+
+  /**
+   * Subdomain offset
+   */
+  subdomainOffset?: number;
+
+  /**
+   * Controller list
+   */
+  controllers?: Function[];
+
+  /**
+   * Middleware list
+   */
+  middlewares?: Middleware[];
+
+  /**
+   * Body parser options
+   * @link https://github.com/koajs/bodyparser
+   */
+  bodyParser?: bodyParser.Options;
+
+  /**
+   * Session options
+   * @link https://github.com/koajs/session
+   */
+  session?: session.opts;
+
+  /**
+   * Global prefix for routes
+   */
+  globalPrefix?: string;
+}
+```
