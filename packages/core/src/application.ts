@@ -46,11 +46,18 @@ export interface ApplicationOptions {
    * @link https://github.com/koajs/session
    */
   session?: session.opts;
+
+  /**
+   * Global prefix for routes
+   */
+  globalPrefix?: string;
 }
 
 export class Application extends Koa {
   private server: Server | null = null;
   private router: Router | null = null;
+
+  private options: ApplicationOptions;
 
   private presetMiddlewares: Middleware[] = [];
 
@@ -63,6 +70,8 @@ export class Application extends Koa {
       proxy: options?.proxy,
       subdomainOffset: options?.subdomainOffset,
     });
+
+    this.options = options || {};
 
     this.controllers = options?.controllers || [];
     this.middlewares = options?.middlewares || [];
@@ -83,7 +92,7 @@ export class Application extends Koa {
   bootstrap(handle: any, listeningListener?: () => void): void;
   public bootstrap(...args: any): void {
     registerMiddleware([...this.presetMiddlewares, ...this.middlewares], this);
-    registerController(this.controllers, this);
+    registerController(this.controllers, this, { globalPrefix: this.options.globalPrefix });
 
     this.server = this.listen(...args);
   }

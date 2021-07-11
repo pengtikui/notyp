@@ -7,6 +7,10 @@ import { METHOD_METADATA, PARAM_TYPES, PATH_METADATA, PREFIX_METADATA } from '..
 import { IParamValue } from '../interface';
 import { getControllerArgs } from './getControllerArgs';
 
+interface RegisterControllerOptions {
+  globalPrefix?: string;
+}
+
 const getMethodNames = (prototype: any): string[] => {
   return Object.getOwnPropertyNames(prototype).filter((methodName: string) => {
     if (methodName === 'constructor') {
@@ -30,7 +34,11 @@ const makeRouterMiddleware =
     ctx.body = isPromise(result) ? await result : result;
   };
 
-export function registerController(controllers: Function[], app: Koa) {
+export function registerController(
+  controllers: Function[],
+  app: Koa,
+  options: RegisterControllerOptions
+) {
   const router = new Router();
 
   controllers.forEach((ControllerClass) => {
@@ -47,7 +55,7 @@ export function registerController(controllers: Function[], app: Koa) {
       const path = Reflect.getMetadata(PATH_METADATA, fn);
       const method = Reflect.getMetadata(METHOD_METADATA, fn);
 
-      const fullPath = joinPath(prefix, path);
+      const fullPath = joinPath(options.globalPrefix || '', prefix, path);
 
       const paramMetadataList: IParamValue[] = [];
       Object.values(PARAM_TYPES).forEach((paramType) => {

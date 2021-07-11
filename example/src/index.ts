@@ -67,8 +67,12 @@ const errorHandler = async (ctx: any, next: any) => {
   }
 };
 
-const app = new Application({ controllers: [UserController], middlewares: [errorHandler] });
+const app = new Application({
+  controllers: [UserController],
+  middlewares: [errorHandler],
+  globalPrefix: 'api',
+});
 
-app.bootstrap(8000, () => {
-  console.log('server is runing at http://localhost:8000');
+app.bootstrap(8080, () => {
+  console.log('server is runing at http://localhost:8080');
 });
