@@ -1,13 +1,13 @@
 {
   "name": "@notyp/example",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": true,
   "scripts": {
     "start": "ts-node ./src/index.ts"
   },
   "dependencies": {
-    "@notyp/config": "^0.0.3",
-    "@notyp/core": "^0.0.3",
+    "@notyp/config": "^0.0.4",
+    "@notyp/core": "^0.0.4",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
     "reflect-metadata": "^0.1.13"

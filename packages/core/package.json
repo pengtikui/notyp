@@ -1,6 +1,6 @@
 {
   "name": "@notyp/core",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A simple Node.js framework based on Koa and TypeDI.",
   "author": "pengtikui",
   "license": "MIT",
