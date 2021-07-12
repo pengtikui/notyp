@@ -4,6 +4,8 @@ export { Context, Next, Middleware } from 'koa';
 export { Options as BodyParserOptions } from 'koa-bodyparser';
 export { opts as SessionOptions } from 'koa-session';
 
+export { NotypMiddleware } from './interface';
+
 export * from './application';
 export * from './decorator/injectable';
 export * from './decorator/controller';

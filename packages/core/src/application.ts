@@ -1,6 +1,6 @@
 import { Server } from 'http';
 import { ListenOptions } from 'net';
-import Koa, { Middleware } from 'koa';
+import Koa from 'koa';
 import Router from '@koa/router';
 
 import bodyParser from 'koa-bodyparser';
@@ -8,6 +8,7 @@ import session from 'koa-session';
 
 import { registerController } from './utils/registerController';
 import { registerMiddleware } from './utils/registerMiddleware';
+import { Middleware } from './interface';
 
 export interface ApplicationOptions {
   /**
