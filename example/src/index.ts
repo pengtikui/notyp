@@ -2,9 +2,12 @@ import 'reflect-metadata';
 import {
   Application,
   Body,
+  Context,
   Controller,
   Get,
   Injectable,
+  Next,
+  NotypMiddleware,
   Params,
   Post,
   Query,
@@ -53,23 +56,30 @@ class UserController {
   }
 }
 
-const errorHandler = async (ctx: any, next: any) => {
-  try {
-    await next();
-  } catch (error) {
-    if (error instanceof ValidationException) {
-      ctx.status = 400;
-      ctx.body = '参数校验失败';
-    } else {
-      ctx.status = 500;
-      ctx.body = 'Internal Server Error';
+@Injectable()
+class ErrorMiddleware implements NotypMiddleware {
+  constructor(private readonly userService: UserService) {}
+  async use(ctx: Context, next: Next) {
+    try {
+      await next();
+    } catch (error) {
+      if (error instanceof ValidationException) {
+        ctx.status = 400;
+        ctx.body = {
+          user: this.userService.getUserDetail(),
+          error: '参数校验失败',
+        };
+      } else {
+        ctx.status = 500;
+        ctx.body = 'Internal Server Error';
+      }
     }
   }
-};
+}
 
 const app = new Application({
   controllers: [UserController],
-  middlewares: [errorHandler],
+  middlewares: [ErrorMiddleware],
   globalPrefix: 'api',
 });
 
