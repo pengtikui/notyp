@@ -55,8 +55,8 @@ export interface ApplicationOptions {
 }
 
 export class Application extends Koa {
-  private server: Server | null = null;
-  private router: Router | null = null;
+  public server: Server | null = null;
+  public router: Router | null = null;
 
   private options: ApplicationOptions;
 
